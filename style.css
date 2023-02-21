@@ -1,0 +1,133 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body > div {
+    position: absolute;
+    width: 100vw;
+    left: 0;
+}
+
+#header {
+    height: 10vh;
+    top: 0;
+    background-color: #292929;
+}
+
+#header > div {
+    width: 100vw;
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+#category {
+    height: 6vh;
+    line-height: 6vh;
+    color: #C8C8C8;
+    font-size: 3vh;
+}
+
+#game {
+    height: 4vh;
+    line-height: 2vh;
+    color: #6D6D6D;
+    font-size: 2.5vh;
+}
+
+#splits {
+    height: 60vh;
+    top: 10vh;
+    background-color: #2E2E30;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#splits::-webkit-scrollbar {
+    display: none;
+}
+
+#currentSplitParent {
+    height: 30vh;
+    top: 70vh;
+    background-color: #292929;
+}
+
+#currentSplit {
+    position: absolute;
+    height: 29vh;
+    width: calc(100vw - 1vh);
+    border: 0.5vh dashed #7D7D7D;
+}
+
+#buttons {
+    position: absolute;
+    height: 4.5vh;
+    top: calc(95vh - 70.5vh);
+    width: inherit;
+    background-color: #191919;
+    text-align: center;
+}
+
+#buttons > div {
+    width: calc((100vw - 1vh) / 2);
+}
+
+#split {
+    position: absolute;
+    color: #E9AA3F;
+    line-height: 4.5vh;
+    font-size: 3vh;
+    border-right: 3px solid #7D7D7D;
+}
+
+#menu {
+    position: absolute;
+    left: calc((100vw - 1vh) / 2);
+    color: #C8C8C8;
+    line-height: 4.5vh;
+    font-size: 3vh;
+}
+
+hr {
+    position: relative;
+    margin: 0 0 0 0;
+    border: none;
+    background-color: #7D7D7D;
+    height: 1.5px;
+}
+
+#currentSegment {
+    height: 15vh;
+}
+
+#currentTime {
+    height: 10vh;
+    position: absolute;
+    width: calc(100vw - 1vh);
+}
+
+#sob {
+    margin-left: 1vw;
+    margin-top: 1vh;
+}
+
+#sobText {
+    color: #909090;
+    font-size: 2.5vh;
+}
+
+#sobTotal {
+    color: #C8C8C8;
+    font-size: 4.5vh;
+    font-weight: 550;
+}
+
+#runningTime {
+    position: absolute;
+    right: 1vw;
+    top: 0;
+    font-size: 9vh;
+    color: white;
+    font-weight: bold;
+}
