@@ -131,3 +131,37 @@ hr {
     color: white;
     font-weight: bold;
 }
+
+.segment {
+    position: relative;
+    height: 15vh;
+    border-bottom: 2px #7D7D7D solid;
+}
+
+.segment > * {
+    position: absolute;
+}
+
+.splitIcon {
+    width: 3vw;
+    height: 3vw;
+    left: 4vw;
+    top: 4vh;
+}
+
+.splitName {
+    left: 12vw;
+    height: 15vh;
+    line-height: 10vh;
+    color: #C8C8C8;
+    font-weight: 450;
+    font-size: 125%;
+}
+
+.splitTime {
+    right: 5vw;
+    top: 9vh;
+    font-weight: 550;
+    color: #C8C8C8;
+    font-size: 4vh;
+}
