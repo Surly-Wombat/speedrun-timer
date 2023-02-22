@@ -1,14 +1,50 @@
 const splitsContainer = document.getElementById("splits");
 const splits = splitsContainer.children;
+const runningSegment = document.getElementById("currentSegment");
 const sobDisplay = document.getElementById("sobTotal");
 const timeDisplay = document.getElementById("runningTime");
-let bestTimes = [];
-let pbTimes = [];
-for(let i = 0; i < splits.length; i++) {
-    bestTimes[i] = -1;
-    pbTimes[i] = -1;
-}
+const splitButton = document.getElementById("split");
+let bestTimes = new Array(splits.length).fill(-1);
+let pbTimes = new Array(splits.length).fill(-1);
+
+let currentTimes = [];
 let currentSegment = 0;
+let interval;
+let startTime, elapsedTime = 0, segmentTime = 0, lastSegmentTime = 0;
+
+function startTimer() {
+    splitButton.innerHTML = "Click to <b>SPLIT</b>";
+    splitButton.removeEventListener("click",startTimer);
+    splitButton.addEventListener("click",splitTimer);
+    
+    startTime = Date.now();
+    currentSegment = 0;
+    changeCurrent(splits[currentSegment]);
+    interval = window.setInterval(updateTimer,3);
+}
+
+function updateTimer() {
+    elapsedTime = Date.now() - startTime;
+    segmentTime = elapsedTime - lastSegmentTime;
+    let time = timeString(elapsedTime);
+    splits[currentSegment].querySelector(".splitTime").innerHTML = time;
+    runningSegment.querySelector(".splitTime").innerHTML = time;
+    timeDisplay.innerHTML = time;
+}
+
+function splitTimer() {
+    bestTimes[currentSegment] = Math.max(bestTimes[currentSegment],segmentTime);
+    lastSegmentTime += segmentTime;
+    segmentTime = 0;
+    currentSegment++;
+    changeCurrent(splits[currentSegment]);
+}
+
+function changeCurrent(element) {
+    runningSegment.querySelector(".splitIcon").innerHTML = element.querySelector(".splitIcon").innerHTML;
+    runningSegment.querySelector(".splitName").innerHTML = element.querySelector(".splitName").innerHTML;
+    runningSegment.querySelector(".splitTime").innerHTML = element.querySelector(".splitTime").innerHTML;
+}
 
 function timeString(ms) {
     if(ms < 0) {
@@ -17,8 +53,8 @@ function timeString(ms) {
     
     let hours = Math.floor(ms / (60 * 60 * 1000));
     let minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000));
-    let seconds = Math.floor((ms % (60 * 1000)) / 10000);
-    ms = ms % 1000;
+    let seconds = Math.floor((ms % (60 * 1000)) / 1000);
+    ms = Math.floor((ms % 1000) / 10);
     
     minutes = (minutes < 10 && hours > 0) ? "0" + minutes : minutes;
     seconds = (seconds < 10 && minutes > 0) ? "0" + seconds : seconds;
@@ -60,3 +96,5 @@ function scrollParentToChild(parent, child) {
           }
     }
 }
+
+splitButton.addEventListener("click", startTimer);

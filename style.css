@@ -71,6 +71,11 @@ body > div {
 
 #buttons > div {
     width: calc((100vw - 1vh) / 2);
+    cursor: pointer;
+}
+
+#buttons > div:hover {
+    background-color: #404040;
 }
 
 #split {
@@ -79,6 +84,10 @@ body > div {
     line-height: 4.5vh;
     font-size: 3vh;
     border-right: 3px solid #7D7D7D;
+}
+
+#split:hover {
+    border-right-color: #404040;
 }
 
 #menu {
