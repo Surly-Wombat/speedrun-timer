@@ -167,10 +167,37 @@ hr {
     font-size: 125%;
 }
 
+.splitDiff {
+    top: 11vh;
+    left: 50vw;
+    font-weight: bold;
+    font-size: 2.5vh;
+}
+
 .splitTime {
     right: 5vw;
     top: 9vh;
     font-weight: 550;
     color: #C8C8C8;
     font-size: 4vh;
+}
+
+.new-best {
+    color: Gold;
+}
+
+.slow-behind {
+    color: DarkRed;
+}
+
+.fast-behind {
+    color: LightCoral;
+}
+
+.slow-ahead {
+    color: LightGreen;
+}
+
+.fast-ahead {
+    color: Green;
 }
