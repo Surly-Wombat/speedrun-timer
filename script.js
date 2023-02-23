@@ -4,9 +4,9 @@ const runningSegment = document.getElementById("currentSegment");
 const sobDisplay = document.getElementById("sobTotal");
 const timeDisplay = document.getElementById("runningTime");
 const splitButton = document.getElementById("split");
-let bestTimes = new Array(splits.length).fill(-1);
+let bestTimes = new Array(splits.length).fill(4000); //temp, make -1
 let pbTimes = new Array(splits.length).fill(-1);
-for(let i = 0; i < pbTimes.length; i++) {
+for(let i = 0; i < pbTimes.length; i++) { //also temp, just remove for loop
     pbTimes[i] = 4000 * (i+1);
 }
 
@@ -14,6 +14,13 @@ let currentTimes = [];
 let currentSegment = 0;
 let interval;
 let startTime, elapsedTime = 0, segmentTime = 0, lastSegmentTime = 0;
+
+if(typeof window.localStorage.bestTimes !== "undefined") {
+    bestTimes = JSON.parse(localStorage.bestTimes);
+}
+if(typeof window.localStorage.pbTimes !== "undefined") {
+    pbTimes = JSON.parse(localStorage.pbTimes);
+}
 
 function startTimer() {
     splitButton.innerHTML = "Click to <b>SPLIT</b>";
@@ -143,16 +150,7 @@ function scrollParentToChild(parent, child) {
 
 splitButton.addEventListener("click", startTimer);
 
-window.onload = function() {
-    if(typeof(localStorage.bestTimes) !== "undefined") {
-        bestTimes = localStorage.bestTimes;
-    }
-    if(typeof(localStorage.pbTimes) !== "undefined") {
-        pbTimes = localStorage.pbTimes;
-    }
-}
-
-window.onbeforeunload = function() {
-    localStorage.bestTimes = bestTimes;
-    localStorage.pbTimes = pbTimes;
-}
+window.addEventListener("unload",function() {
+    window.localStorage.bestTimes = JSON.stringify(bestTimes);
+    window.localStorage.pbTimes = JSON.stringify(pbTimes);
+});
