@@ -67,6 +67,8 @@ body > div {
     width: inherit;
     background-color: #191919;
     text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 #buttons > div {
@@ -127,6 +129,23 @@ hr {
 }
 
 #sobTotal {
+    color: #C8C8C8;
+    font-size: 4.5vh;
+    font-weight: 550;
+}
+
+#pb {
+    position: absolute;
+    left: 30vw;
+    top: 1vh;
+}
+
+#pbText {
+    color: #909090;
+    font-size: 2.5vh;
+}
+
+#pbTotal {
     color: #C8C8C8;
     font-size: 4.5vh;
     font-weight: 550;
