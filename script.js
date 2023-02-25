@@ -2,13 +2,14 @@ const splitsContainer = document.getElementById("splits");
 const splits = splitsContainer.children;
 const runningSegment = document.getElementById("currentSegment");
 const sobDisplay = document.getElementById("sobTotal");
+const pbDisplay = document.getElementById("pbTotal");
 const timeDisplay = document.getElementById("runningTime");
 const splitButton = document.getElementById("split");
 let bestTimes = new Array(splits.length).fill(4000); //temp, make -1
 let pbTimes = new Array(splits.length).fill(-1);
-for(let i = 0; i < pbTimes.length; i++) { //also temp, just remove for loop
+/*for(let i = 0; i < pbTimes.length; i++) { //also temp, just remove for loop
     pbTimes[i] = 4000 * (i+1);
-}
+}*/
 
 let currentTimes = [];
 let currentSegment = 0;
@@ -22,15 +23,30 @@ if(typeof window.localStorage.pbTimes !== "undefined") {
     pbTimes = JSON.parse(localStorage.pbTimes);
 }
 
+setPB();
+updateSOB();
+updatePB();
+
 function startTimer() {
     splitButton.innerHTML = "Click to <b>SPLIT</b>";
     splitButton.removeEventListener("click",startTimer);
     splitButton.addEventListener("click",splitTimer);
     
+    for(let i = 0; i < splits.length; i++) {
+        const compare = splits[i].querySelector(".splitDiff");
+        compare.innerHTML = "";
+        compare.classList.remove(...compare.classList);
+        compare.classList.add("splitDiff");
+    }
+    
+    setPB();
+    updateSOB();
+    scrollParentToChild(splitsContainer,splits[0]);
     startTime = Date.now();
     currentSegment = 0;
     changeCurrent(splits[currentSegment]);
     interval = window.setInterval(updateTimer,3);
+    console.log(pbTimes);
 }
 
 function updateTimer() {
@@ -47,10 +63,49 @@ function splitTimer() {
     lastSegmentTime += segmentTime;
     splitCompare();
     bestTimes[currentSegment] = Math.min(bestTimes[currentSegment],segmentTime);
+    updateSOB();
     segmentTime = 0;
     currentSegment++;
+    if(currentSegment >= splits.length) {
+        stopTimer();
+        return;
+    }
     changeCurrent(splits[currentSegment]);
-    scrollParentToChild(splits,splits[currentSegment]);
+    scrollParentToChild(splitsContainer,splits[currentSegment]);
+}
+
+function stopTimer() {
+    clearInterval(interval);
+    if(elapsedTime < pbTimes[pbTimes.length-1] || pbTimes[0] == -1) {
+        pbTimes = currentTimes.slice();
+    }
+    lastSegmentTime = 0;
+    currentSegment = 0;
+    startTime = 0;
+    elapsedTime = 0;
+    currentTimes = [];
+    splitButton.innerHTML = "Click to <b>START</b>";
+    splitButton.removeEventListener("click",splitTimer);
+    splitButton.addEventListener("click",startTimer);
+    updatePB();
+}
+
+function setPB() {
+    for(let i = 0; i < splits.length; i++) {
+        splits[i].querySelector(".splitTime").innerHTML = timeString(pbTimes[i]);
+    }
+}
+
+function updateSOB() {
+    let sob = 0;
+    for(const num of bestTimes) {
+        sob += num;
+    }
+    sobDisplay.innerHTML = timeString(sob);
+}
+
+function updatePB() {
+    pbDisplay.innerHTML = timeString(pbTimes[pbTimes.length - 1]);
 }
 
 function changeCurrent(element) {
@@ -74,16 +129,17 @@ function splitCompare() {
         splitDiff = segmentTime - pbSplit;
         splitDiffDisplay.innerHTML = timeDiff(totalDiff);
     }
+    
     if(segmentTime < bestTimes[currentSegment]) {
-        currentSplit.classList.add("new-best");
+        currentSplit.querySelector(".splitDiff").classList.add("new-best");
     }
     else if(splitDiff > 0) {
-        if(elapsedTime > pbTimes[currentSegment]) currentSplit.classList.add("slow-behind");
-        else currentSplit.classList.add("slow-ahead");
+        if(elapsedTime > pbTimes[currentSegment]) currentSplit.querySelector(".splitDiff").classList.add("slow-behind");
+        else currentSplit.querySelector(".splitDiff").classList.add("slow-ahead");
     }
     else {
-        if(elapsedTime > pbTimes[currentSegment]) currentSplit.classList.add("fast-behind");
-        else currentSplit.classList.add("fast-ahead");
+        if(elapsedTime > pbTimes[currentSegment]) currentSplit.querySelector(".splitDiff").classList.add("fast-behind");
+        else currentSplit.querySelector(".splitDiff").classList.add("fast-ahead");
     }
 }
 
